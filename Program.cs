@@ -1,64 +1,38 @@
-﻿namespace OTUS_Immutable_Observable_Concurrent
+﻿using System.Collections.Immutable;
+
+namespace OTUS_Immutable_Observable_Concurrent
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var Library = new Library();
+            ImmutableList<string> poem = ImmutableList<string>.Empty;
 
-            ShowMenu();
-
-            while (true)
+            // Создаем экземпляры всех частей
+            var parts = new IPart[]
             {
-                // Ожидаем нажатия клавиши
-                var key = Console.ReadKey(intercept: true).Key;
+                new Part1(),
+                new Part2(),
+                new Part3(),
+                new Part4(),
+                new Part5(),
+                new Part6(),
+                new Part7(),
+                new Part8(),
+                new Part9()
+            };
 
-                switch (key)
-                {
-                    case ConsoleKey.D1:
-                        while (true)
-                        {
-                            Console.WriteLine("Введите название книги");
-                            string input = Console.ReadLine();
-
-                            
-                            if (!string.IsNullOrEmpty(input))
-                            {
-                                Library.Add(input);
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Название книги не может быть пустым. Попробуйте снова.");
-                            }
-                        }
-                        break;
-
-                    case ConsoleKey.D2:
-                        Console.WriteLine("Непрочитанные книги:");
-                        Library.GetUnreadedBooks();
-                        break;
-
-                    case ConsoleKey.D3:
-                        Console.WriteLine("Выход из программы.");
-                        return;
-
-                    default:
-                        Console.WriteLine("Неизвестная команда.");
-                        break;
-                }
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\nВозвращаемся в меню:");
-                Console.ResetColor();
-                ShowMenu();                
+            // Последовательно вызываем методы AddPart
+            foreach (var part in parts)
+            {
+                poem = part.AddPart(poem);
             }
-        }
 
-        static void ShowMenu ()
-        {
-            Console.WriteLine("Нажмите 1, чтобы добавить книгу.");
-            Console.WriteLine("Нажмите 2, чтобы вывести список непрочитанного.");
-            Console.WriteLine("Нажмите 3, чтобы выйти.");
+            // Выводим результат каждой части
+            for (int i = 0; i < parts.Length; i++)
+            {
+                parts[i].PrintPoem($"Часть стишка {i + 1}");
+            }
         }
     }
 }
