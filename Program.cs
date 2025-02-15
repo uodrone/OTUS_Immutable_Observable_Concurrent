@@ -4,14 +4,9 @@
     {
         static void Main(string[] args)
         {
-            var Shop = new Shop();
-            var Customer = new Customer();
+            var Library = new Library();
 
-            Shop.items.CollectionChanged += Customer.OnItemChanged;
-
-            Console.WriteLine("Нажмите A, чтобы добавить товар.");
-            Console.WriteLine("Нажмите D, чтобы удалить товар.");
-            Console.WriteLine("Нажмите X, чтобы выйти.");
+            ShowMenu();
 
             while (true)
             {
@@ -20,27 +15,31 @@
 
                 switch (key)
                 {
-                    case ConsoleKey.A:
-                        string itemName = $"Товар от {DateTime.Now}";
-                        Shop.Add(itemName);
-                        break;
-
-                    case ConsoleKey.D:
-                        Console.WriteLine("Введите id товара для удаления: ");
-                        if (int.TryParse(Console.ReadLine(), out int id))
+                    case ConsoleKey.D1:
+                        while (true)
                         {
-                            if (!Shop.Remove(id))
+                            Console.WriteLine("Введите название книги");
+                            string input = Console.ReadLine();
+
+                            
+                            if (!string.IsNullOrEmpty(input))
                             {
-                                Console.WriteLine("Элемента с таким id не существует");
+                                Library.Add(input);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Название книги не может быть пустым. Попробуйте снова.");
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("Некорректный идентификатор.");
-                        }
                         break;
 
-                    case ConsoleKey.X:
+                    case ConsoleKey.D2:
+                        Console.WriteLine("Непрочитанные книги:");
+                        Library.GetUnreadedBooks();
+                        break;
+
+                    case ConsoleKey.D3:
                         Console.WriteLine("Выход из программы.");
                         return;
 
@@ -48,7 +47,18 @@
                         Console.WriteLine("Неизвестная команда.");
                         break;
                 }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nВозвращаемся в меню:");
+                Console.ResetColor();
+                ShowMenu();                
             }
+        }
+
+        static void ShowMenu ()
+        {
+            Console.WriteLine("Нажмите 1, чтобы добавить книгу.");
+            Console.WriteLine("Нажмите 2, чтобы вывести список непрочитанного.");
+            Console.WriteLine("Нажмите 3, чтобы выйти.");
         }
     }
 }
