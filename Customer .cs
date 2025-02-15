@@ -23,6 +23,7 @@ namespace OTUS_Immutable_Observable_Concurrent
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
+                    //e.OldItems содержит список удолённых элементов
                     foreach (Item oldItem in e.OldItems)
                     {
                         Console.WriteLine($"Элемент удалён: {oldItem.Name}");
